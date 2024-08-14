@@ -1,11 +1,10 @@
 # ---------------------------------------------------------------------------- #
 # Group members:
-# Cecilie cevei21@student.sdu.dk
-# Josefine ander22@student.sdu.dk
-# Mathias krist21@student.sdu.dk
-# Simone sileb18@student.sdu.dk
-# Stinne stzac22@student.sdu.dk
-#
+# Cecilie   cevei21@student.sdu.dk
+# Josefine  ander22@student.sdu.dk
+# Mathias   krist21@student.sdu.dk
+# Simone    sileb18@student.sdu.dk
+# Stinne    stzac22@student.sdu.dk
 # ---------------------------------------------------------------------------- #
 #                                    Imports                                   #
 # ---------------------------------------------------------------------------- #
@@ -15,13 +14,13 @@ import torch.nn as nn
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
-# ---------------------------------------------------------------------------- #
 
-transform = transforms.Compose([transforms.ToTensor(),transforms.Resize(input_dim)])
+# ---------------------------------------------------------------------------- #
 
 
 input_dim = (h,w)
 channel_dim = c
+transform = transforms.Compose([transforms.ToTensor(),transforms.Resize(input_dim)])
 
 class group_7(nn.Module):
     def _init_(self):
@@ -118,6 +117,8 @@ plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.title('Training Loss')
 plt.show()
+
+
 
 
 
