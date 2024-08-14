@@ -1,12 +1,13 @@
 
-TIL EXERCISE 5
-Opgave 1.a og 1.b er lavet
-Prøvet på resten af opgave 1 i Exercise5.py men den virker ikke
 
-Under Exercise 5 solutions kan exercise 5.py findes som er hans svar men den tager meget meget lang tid at køre.
+The assignment concers creating a model for detecting pneumonia in covid patients.
+The four tasks are structured as such:
 
-
-TIL EXERCISE 6
-Opgave 1 køre super hvis man bare køre den.
-
-Opgave 2 
+[] Task 1: Organizing the dataset
+    - Organizing data into directories and determining training/validation/testing split
+[] Task 2: Creating a custom dataset class and a dataloader
+    - Implementing dataloader to feed network
+[] Task 3: Construction of the network
+    - Consider and describe method for optimization and choice of hyperparameters
+[] Task 4: Visualization of results
+    - Visual representation of code
