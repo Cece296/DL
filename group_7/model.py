@@ -13,7 +13,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torchvision import datasets, transforms
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader , Dataset
 import matplotlib.pyplot as plt
 import os
 import random
@@ -23,6 +23,27 @@ from PIL import Image
 
 # ------------------------------- Using Device ------------------------------- #
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# ------------------------------- Custom Dataset ------------------------------ #
+class ChestXRayDataset(Dataset):
+    def _init_(self, img_dir, transform=None):
+        self.img_dir = img_dir
+        self.transform = transform
+        self.images = os.listdir(img_dir)
+        self.labels = [0 if 'NORMAL' in img else 1 for img in self.images]
+
+    def _len_(self):
+        return len(self.images)
+
+    def _getitem_(self, idx):
+        img_path = os.path.join(self.img_dir, self.images[idx])
+        image = Image.open(img_path)
+        label = self.labels[idx]
+
+        if self.transform:
+            image = self.transform(image)
+
+        return image, label
 
 
 # ------------------------------- Model Class ------------------------------- #
@@ -141,8 +162,6 @@ def training_loop(model, train_loader, test_loader, loss_fn, optimizer, device, 
     return train_losses, test_losses, train_accuracies, test_accuracies
 
 
-
-
 # -------------------------------- Dataloader -------------------------------- #
 
 # Define paths to training, validation, and testing directories
@@ -162,15 +181,13 @@ test_loader = DataLoader(dataset=test_dataset, batch_size=32, shuffle=False, num
 
 
 # Data augmentation
-
-#Choise of data augmentations:
-#Random Horizontal Flip: Since chest X-rays can be taken with slight variations in the patient's position, this helps the model become invariant to such changes.
 transform = transforms.Compose([
     transforms.Resize(256),
     transforms.CenterCrop(224),
-    transforms.RandomHorizontalFlip(), # We have used this because it is a common transformation for data augmentation
+    transforms.RandomHorizontalFlip(), #This can help the model become invariant to changes in the patient's position when the chest X-rays are taken.
     transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]) # We have used this because it is the standard normalization for the pre-trained models
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), # We have used this because it is the standard normalization for the pre-trained models
+    transforms.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1, hue=0.1) # This can help the model become invariant to changes in the color of the X-ray images.
 ])
 
 
