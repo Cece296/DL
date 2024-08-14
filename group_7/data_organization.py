@@ -5,53 +5,48 @@
 
 # The images are randomly assigned to the different folders.
 
-# This was primarily made by
-
 # ---------------------------------------------------------------------------- #
 #                                    Imports                                   #
 # ---------------------------------------------------------------------------- #
 import os
 from pathlib import Path
-from os import walk
 import shutil
 import random
-from PIL import Image
 
 # ---------------------------------------------------------------------------- #
-
-# function that moves the files into the subfolders
-def move_files(my_list, name:str):
-    random.shuffle(my_list) # shuffles the list of images to make it random
-    for index, image_name in enumerate(my_list):
-        # This is used to move the images from the main folder into the subfolders
-        if index <= 770: # 70% of the data is used for training
-            shutil.move(data_dir / image_name, data_dir / 'training' / name / image_name) 
-        elif 770 < index <= 990: # 20% of the data is used for validation
-            shutil.move(data_dir / image_name, data_dir / 'validation' / name / image_name)
-        else: # 10% of the data is used for testing
-            shutil.move(data_dir / image_name, data_dir / 'test' / name / image_name)
-
-
 #Retrieve the directory path.
-src = Path(__file__).parent
-data_dir = src / 'data' # The data folder is in the same directory as the script
+pathSource = Path(__file__).parent
+dataDirec = pathSource / 'data'     # The data folder has to be in the same directory as this file
 
 
 # Create the train, validation and testing folders with normal and pneumonia subfolders
-os.makedirs(data_dir / 'training' / 'normal', exist_ok=True)
-os.makedirs(data_dir / 'training' / 'pneumonia', exist_ok=True)
-os.makedirs(data_dir / 'validation' / 'normal', exist_ok=True)
-os.makedirs(data_dir / 'validation' / 'pneumonia', exist_ok=True)
-os.makedirs(data_dir / 'testing' / 'normal', exist_ok=True)
-os.makedirs(data_dir / 'testing' / 'pneumonia', exist_ok=True)
+os.makedirs(dataDirec / 'training' / 'normal', exist_ok=True)
+os.makedirs(dataDirec / 'training' / 'pneumonia', exist_ok=True)
+os.makedirs(dataDirec / 'validation' / 'normal', exist_ok=True)
+os.makedirs(dataDirec / 'validation' / 'pneumonia', exist_ok=True)
+os.makedirs(dataDirec / 'testing' / 'normal', exist_ok=True)
+os.makedirs(dataDirec / 'testing' / 'pneumonia', exist_ok=True)
 
 
 # Get the names of the images in the data folder and split them into normal and pneumonia images
 # This is done by checking the last part of the name, which is either normal or pneumonia
-normal_images = [name for name in os.listdir(data_dir) if name.rsplit('_',1)[-1] == 'normal.jpg'] # looks at the last part of the name if it's "normal"
-pneumonia_images = [name for name in os.listdir(data_dir) if name.rsplit('_',1)[-1] == 'pneumonia.jpg'] # looks at the last part of the name if it's "pneumonia"
+normalImages = [name for name in os.listdir(dataDirec) if name.rsplit('_',1)[-1] == 'normal.jpg']       # looks at the last part of the name if it's "normal"
+pneumoniaImages = [name for name in os.listdir(dataDirec) if name.rsplit('_',1)[-1] == 'pneumonia.jpg'] # looks at the last part of the name if it's "pneumonia"
+
+
+# function that moves the files into the subfolders
+def moveFiles(list, name:str):
+    random.shuffle(list)         # shuffles the list of images to make it random
+    for index, imageName in enumerate(list):
+        # This is used to move the images from the main folder into the subfolders
+        if index <= 770:            # 70% of the data is used for training
+            shutil.move(dataDirec / imageName, dataDirec / 'training' / name / imageName)   # moves the first 770 images to the training folder
+        elif 770 < index <= 990:    # 20% of the data is used for validation
+            shutil.move(dataDirec / imageName, dataDirec / 'validation' / name / imageName) # moves the next 220 images to the validation folder
+        else:                       # 10% of the data is used for testing
+            shutil.move(dataDirec / imageName, dataDirec / 'testing' / name / imageName)    # moves the last 110 images to the testing folder
 
 
 # moves the images into the correct folders
-move_files(normal_images, "normal")
-move_files(pneumonia_images, "pneumonia")
+moveFiles(normalImages, "normal")
+moveFiles(pneumoniaImages, "pneumonia")
