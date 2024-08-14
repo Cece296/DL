@@ -60,6 +60,14 @@ Retrieve the directory path.
 src = Path(__file__).parent
 data_dir = src / 'data'
 
+# Create the train, validation and testing folders with normal and pneumonia subfolders
+os.makedirs(data_dir / 'training' / 'normal', exist_ok=True)
+os.makedirs(data_dir / 'training' / 'pneumonia', exist_ok=True)
+os.makedirs(data_dir / 'validation' / 'normal', exist_ok=True)
+os.makedirs(data_dir / 'validation' / 'pneumonia', exist_ok=True)
+os.makedirs(data_dir / 'testing' / 'normal', exist_ok=True)
+os.makedirs(data_dir / 'testing' / 'pneumonia', exist_ok=True)
+
 """
 Saving all the image names, having normal and pneumonia in seperate list, such that
 we can make sure to get the same amount of respectively sick and healthy individuals in 
